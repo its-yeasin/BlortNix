@@ -1,50 +1,66 @@
-# Welcome to your Expo app 👋
+# BlortNix
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A fast-paced reaction game that tests your reflexes and focus!
 
-## Get started
+## 🎮 Game Description
 
-1. Install dependencies
+BlortNix is an addictive tap-reaction game where targets spawn randomly on a 5x5 grid. Tap them before they disappear! But watch out for bombs!
 
-   ```bash
-   npm install
-   ```
+## 🕹️ How to Play
 
-2. Start the app
+### Targets
+- ⚪ **White targets** (+10 base points) - Tap quickly! They change color as time runs out
+- ⭐ **Golden bonus** (+50 base points) - Rare and disappear faster!
+- 💣 **Red bombs** - DON'T tap! Costs a life
 
-   ```bash
-   npx expo start
-   ```
+### Scoring System
+- **Time Bonus**: Tap faster = more points (up to +10)
+- **Combo Multiplier**: Chain taps for up to 10x multiplier!
+- **Quick Tap Bonus**: +5 points for rapid taps
 
-In the output, you'll find options to open the app in a
+### Difficulty
+- Game gets harder every 500 points
+- Targets spawn faster (up to Level 15)
+- Targets disappear quicker
+- More intense = higher scores!
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Lives
+- Start with 3 ❤️ lives
+- Lose a life: tap a bomb OR miss a target
+- Game over when lives = 0
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ✨ Features
 
-## Get a fresh project
+- **Progressive difficulty** - 15 levels of increasing challenge
+- **Combo system** - Build multipliers for massive scores
+- **Visual feedback** - Targets change color as time runs out
+- **Haptic feedback** - Feel your taps
+- **High score persistence** - Beat your best!
+- **Responsive design** - Works on all screen sizes
+- **Completely offline** - No internet required
+- **No ads, no tracking** - Pure gameplay
 
-When you're ready, run:
+## 🏆 Tips for High Scores
+
+1. **Build combos** - Don't miss targets to keep your multiplier
+2. **Prioritize golden stars** - They're worth 5x more!
+3. **Avoid bombs** - They reset your combo AND cost a life
+4. **Tap fast** - Quick taps give bonus points
+5. **Watch the colors** - White → Yellow → Red means time is running out
+
+## Privacy
+
+This app collects NO personal data. Your high score is stored locally only.
+See [Privacy Policy](./PRIVACY_POLICY.md) for details.
+
+## Development
 
 ```bash
-npm run reset-project
+npm install     # Install dependencies
+npm start       # Start development
+npm run android # Run on Android
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## License
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+MIT
