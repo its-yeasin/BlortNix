@@ -44,9 +44,11 @@
       "reactCompiler": true
     },
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "blortnix"
+        "projectId": "52990562-0ea2-41db-9e58-23b1a4e2dd86"
       }
-    }
+    },
+    "owner": "fahim160"
   }
 }
