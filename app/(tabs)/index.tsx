@@ -685,18 +685,40 @@ export default function BlortNixGame() {
 
       {/* Header */}
       <View style={styles.header}>
-        <View style={styles.scoreSection}>
-          <Text style={[styles.scoreLabel, { color: theme.textSecondary }]}>
+        {/* Score Card */}
+        <View
+          style={[
+            styles.statCard,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.cardBorder,
+            },
+          ]}
+        >
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
             SCORE
           </Text>
-          <Text style={[styles.scoreText, { color: theme.text }]}>
+          <Text style={[styles.statValue, { color: theme.text }]}>
             {score.toLocaleString()}
+          </Text>
+          <Text style={[styles.statSubtext, { color: theme.textMuted }]}>
+            Best: {highScore.toLocaleString()}
           </Text>
         </View>
 
-        <View style={styles.levelSection}>
-          <Text style={[styles.levelText, { color: theme.accent }]}>
-            LV {level}
+        {/* Level & Combo Card */}
+        <View
+          style={[
+            styles.statCard,
+            styles.centerCard,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.cardBorder,
+            },
+          ]}
+        >
+          <Text style={[styles.levelBadge, { color: theme.accent }]}>
+            LEVEL {level}
           </Text>
           {combo >= 3 && (
             <Text
@@ -711,127 +733,214 @@ export default function BlortNixGame() {
           )}
         </View>
 
-        <View style={styles.headerRight}>
-          {/* Pause Button - only show during gameplay, on left of lives */}
+        {/* Lives & Pause Card */}
+        <View
+          style={[
+            styles.statCard,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.cardBorder,
+            },
+          ]}
+        >
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
+            LIVES
+          </Text>
+          <View style={styles.livesRow}>{renderLives()}</View>
           {gameState === "playing" && (
             <Pressable
               style={[
-                styles.pauseButton,
+                styles.pauseButtonCompact,
                 {
                   backgroundColor: isDark
-                    ? "rgba(255,255,255,0.15)"
-                    : "rgba(0,0,0,0.1)",
+                    ? "rgba(255,255,255,0.1)"
+                    : "rgba(0,0,0,0.08)",
                 },
               ]}
               onPress={pauseGame}
             >
-              <PauseIcon size={18} color={theme.text} />
+              <PauseIcon size={14} color={theme.textSecondary} />
+              <Text
+                style={[
+                  styles.pauseButtonLabel,
+                  { color: theme.textSecondary },
+                ]}
+              >
+                PAUSE
+              </Text>
             </Pressable>
           )}
-
-          <View style={styles.livesSection}>
-            <Text style={[styles.livesLabel, { color: theme.textSecondary }]}>
-              LIVES
-            </Text>
-            <View style={styles.livesRow}>{renderLives()}</View>
-          </View>
         </View>
-      </View>
-
-      {/* High Score */}
-      <View style={styles.highScoreContainer}>
-        <Text style={[styles.highScoreText, { color: theme.textMuted }]}>
-          BEST: {highScore.toLocaleString()}
-        </Text>
       </View>
 
       {/* Game Area */}
       <View style={styles.gameArea}>
         {gameState === "ready" && (
-          <Pressable style={styles.startButton} onPress={startGame}>
-            <Text style={[styles.titleText, { color: theme.text }]}>
-              BLORTNIX
-            </Text>
-            <Text style={[styles.subtitleText, { color: theme.textSecondary }]}>
-              Tap the targets!
-            </Text>
-            <View style={styles.startButtonInner}>
-              <PlayIcon size={28} color={theme.accent} />
-              <Text style={[styles.startText, { color: theme.accent }]}>
-                TAP TO START
+          <View style={styles.startScreen}>
+            <View style={styles.startHeader}>
+              <Text style={[styles.titleText, { color: theme.text }]}>
+                BLORTNIX
+              </Text>
+              <Text
+                style={[styles.subtitleText, { color: theme.textSecondary }]}
+              >
+                Tap the targets before they vanish!
               </Text>
             </View>
-            <View style={styles.legendContainer}>
-              <View style={styles.legendItem}>
-                <View
-                  style={[
-                    styles.legendDot,
-                    { backgroundColor: isDark ? "#fff" : "#333" },
-                  ]}
-                />
-                <Text
-                  style={[styles.legendText, { color: theme.textSecondary }]}
-                >
-                  Target (+10)
-                </Text>
-              </View>
-              <View style={styles.legendItem}>
-                <View
-                  style={[styles.legendDot, { backgroundColor: "#ffd700" }]}
-                >
-                  <StarIcon size={14} color="#000" />
+
+            <View
+              style={[
+                styles.legendCard,
+                {
+                  backgroundColor: theme.cardBackground,
+                  borderColor: theme.cardBorder,
+                },
+              ]}
+            >
+              <Text style={[styles.legendTitle, { color: theme.text }]}>
+                HOW TO PLAY
+              </Text>
+              <View style={styles.legendGrid}>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[
+                      styles.legendIcon,
+                      { backgroundColor: isDark ? "#fff" : "#333" },
+                    ]}
+                  />
+                  <View style={styles.legendTextContainer}>
+                    <Text style={[styles.legendLabel, { color: theme.text }]}>
+                      Target
+                    </Text>
+                    <Text
+                      style={[
+                        styles.legendDesc,
+                        { color: theme.textSecondary },
+                      ]}
+                    >
+                      +10 points
+                    </Text>
+                  </View>
                 </View>
-                <Text
-                  style={[styles.legendText, { color: theme.textSecondary }]}
-                >
-                  Bonus (+50)
-                </Text>
-              </View>
-              <View style={styles.legendItem}>
-                <View
-                  style={[styles.legendDot, { backgroundColor: "#ff3333" }]}
-                >
-                  <BombIcon size={16} />
+                <View style={styles.legendItem}>
+                  <View
+                    style={[styles.legendIcon, { backgroundColor: "#ffd700" }]}
+                  >
+                    <StarIcon size={18} color="#000" />
+                  </View>
+                  <View style={styles.legendTextContainer}>
+                    <Text style={[styles.legendLabel, { color: theme.text }]}>
+                      Bonus
+                    </Text>
+                    <Text
+                      style={[
+                        styles.legendDesc,
+                        { color: theme.textSecondary },
+                      ]}
+                    >
+                      +50 points
+                    </Text>
+                  </View>
                 </View>
-                <Text
-                  style={[styles.legendText, { color: theme.textSecondary }]}
-                >
-                  Bomb (-
-                </Text>
-                <HeartIcon size={14} filled={true} color="#ff4444" />
-                <Text
-                  style={[styles.legendText, { color: theme.textSecondary }]}
-                >
-                  )
-                </Text>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[styles.legendIcon, { backgroundColor: "#ff3333" }]}
+                  >
+                    <BombIcon size={20} />
+                  </View>
+                  <View style={styles.legendTextContainer}>
+                    <Text style={[styles.legendLabel, { color: theme.text }]}>
+                      Bomb
+                    </Text>
+                    <Text style={[styles.legendDesc, { color: theme.danger }]}>
+                      Lose a life!
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
-          </Pressable>
+
+            <Pressable
+              style={[styles.playButton, { backgroundColor: theme.accent }]}
+              onPress={startGame}
+            >
+              <PlayIcon size={24} color="#000" />
+              <Text style={styles.playButtonText}>START GAME</Text>
+            </Pressable>
+          </View>
         )}
 
         {gameState === "gameover" && (
           <View
             style={[
               styles.gameOverContainer,
-              { backgroundColor: theme.cardBackground },
+              {
+                backgroundColor: theme.cardBackground,
+                borderColor: theme.cardBorder,
+              },
             ]}
           >
             <Text style={[styles.gameOverText, { color: theme.danger }]}>
               GAME OVER
             </Text>
-            <Text style={[styles.finalScoreText, { color: theme.text }]}>
-              {score.toLocaleString()}
-            </Text>
-            <Text
-              style={[styles.finalScoreLabel, { color: theme.textSecondary }]}
-            >
-              POINTS
-            </Text>
-            {score >= highScore && score > 0 && (
-              <Text style={[styles.newHighScore, { color: theme.gold }]}>
-                ★ NEW BEST! ★
+
+            <View style={styles.scoreDisplay}>
+              <Text style={[styles.finalScoreText, { color: theme.text }]}>
+                {score.toLocaleString()}
               </Text>
+              <Text
+                style={[styles.finalScoreLabel, { color: theme.textSecondary }]}
+              >
+                POINTS
+              </Text>
+            </View>
+
+            {score >= highScore && score > 0 && (
+              <View
+                style={[
+                  styles.achievementBadge,
+                  {
+                    backgroundColor: isDark
+                      ? "rgba(255, 215, 0, 0.15)"
+                      : "rgba(255, 215, 0, 0.1)",
+                  },
+                ]}
+              >
+                <Text style={[styles.newHighScore, { color: theme.gold }]}>
+                  ★ NEW BEST! ★
+                </Text>
+              </View>
             )}
+
+            <View style={styles.gameOverStats}>
+              <View style={styles.statItem}>
+                <Text
+                  style={[styles.statItemLabel, { color: theme.textSecondary }]}
+                >
+                  Level Reached
+                </Text>
+                <Text style={[styles.statItemValue, { color: theme.text }]}>
+                  {level}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.statDivider,
+                  { backgroundColor: theme.cardBorder },
+                ]}
+              />
+              <View style={styles.statItem}>
+                <Text
+                  style={[styles.statItemLabel, { color: theme.textSecondary }]}
+                >
+                  Best Score
+                </Text>
+                <Text style={[styles.statItemValue, { color: theme.text }]}>
+                  {highScore.toLocaleString()}
+                </Text>
+              </View>
+            </View>
+
             <View style={styles.gameOverButtons}>
               <Pressable
                 style={[styles.menuButton, { backgroundColor: theme.accent }]}
@@ -854,7 +963,7 @@ export default function BlortNixGame() {
                     { color: theme.textSecondary },
                   ]}
                 >
-                  HOME
+                  MENU
                 </Text>
               </Pressable>
             </View>
@@ -881,29 +990,77 @@ export default function BlortNixGame() {
               <Text style={[styles.pauseTitle, { color: theme.text }]}>
                 PAUSED
               </Text>
-              <View style={styles.pauseStats}>
-                <Text
-                  style={[styles.pauseStatText, { color: theme.textSecondary }]}
+
+              <View style={styles.pauseStatsGrid}>
+                <View
+                  style={[
+                    styles.pauseStatCard,
+                    {
+                      backgroundColor: isDark
+                        ? "rgba(255,255,255,0.05)"
+                        : "rgba(0,0,0,0.03)",
+                    },
+                  ]}
                 >
-                  Score: {score.toLocaleString()}
-                </Text>
-                <Text
-                  style={[styles.pauseStatText, { color: theme.textSecondary }]}
-                >
-                  Level: {level}
-                </Text>
-                <View style={styles.pauseStatLives}>
                   <Text
                     style={[
-                      styles.pauseStatText,
+                      styles.pauseStatLabel,
                       { color: theme.textSecondary },
                     ]}
                   >
-                    Lives:{" "}
+                    SCORE
                   </Text>
-                  {renderLives()}
+                  <Text style={[styles.pauseStatValue, { color: theme.text }]}>
+                    {score.toLocaleString()}
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.pauseStatCard,
+                    {
+                      backgroundColor: isDark
+                        ? "rgba(255,255,255,0.05)"
+                        : "rgba(0,0,0,0.03)",
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.pauseStatLabel,
+                      { color: theme.textSecondary },
+                    ]}
+                  >
+                    LEVEL
+                  </Text>
+                  <Text
+                    style={[styles.pauseStatValue, { color: theme.accent }]}
+                  >
+                    {level}
+                  </Text>
                 </View>
               </View>
+
+              <View
+                style={[
+                  styles.pauseLivesContainer,
+                  {
+                    backgroundColor: isDark
+                      ? "rgba(255,255,255,0.05)"
+                      : "rgba(0,0,0,0.03)",
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.pauseStatLabel,
+                    { color: theme.textSecondary },
+                  ]}
+                >
+                  LIVES
+                </Text>
+                <View style={styles.pauseLivesRow}>{renderLives()}</View>
+              </View>
+
               <View style={styles.pauseButtons}>
                 <Pressable
                   style={[styles.menuButton, { backgroundColor: theme.accent }]}
@@ -926,7 +1083,7 @@ export default function BlortNixGame() {
                       { color: theme.textSecondary },
                     ]}
                   >
-                    HOME
+                    MENU
                   </Text>
                 </Pressable>
               </View>
@@ -1015,179 +1172,242 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     paddingHorizontal: 16,
     width: "100%",
-    marginBottom: 10,
-    position: "relative",
+    marginBottom: 16,
+    gap: 10,
   },
-  scoreSection: {
-    alignItems: "flex-start",
-    zIndex: 1,
+  statCard: {
+    flex: 1,
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 12,
+    alignItems: "center",
+    minHeight: 85,
+    justifyContent: "center",
   },
-  scoreLabel: {
-    fontSize: 11,
+  centerCard: {
+    justifyContent: "center",
+  },
+  statLabel: {
+    fontSize: 10,
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
     fontWeight: "bold",
     letterSpacing: 1,
+    marginBottom: 4,
   },
-  scoreText: {
-    fontSize: 26,
+  statValue: {
+    fontSize: 22,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
   },
-  levelSection: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    alignItems: "center",
-    zIndex: 0,
-  },
-  levelText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-  },
-  comboText: {
-    fontSize: 13,
-    fontWeight: "bold",
+  statSubtext: {
+    fontSize: 10,
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
     marginTop: 4,
   },
-  comboTextBig: {
+  levelBadge: {
     fontSize: 16,
-  },
-  headerRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    zIndex: 1,
-  },
-  livesSection: {
-    alignItems: "flex-end",
-  },
-  livesLabel: {
-    fontSize: 11,
-    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
     fontWeight: "bold",
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
     letterSpacing: 1,
-    marginBottom: 3,
+  },
+  comboText: {
+    fontSize: 11,
+    fontWeight: "bold",
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    marginTop: 6,
+  },
+  comboTextBig: {
+    fontSize: 13,
   },
   livesRow: {
     flexDirection: "row",
-    gap: 7,
-    marginTop: 2,
+    gap: 6,
+    marginTop: 4,
   },
-  livesText: {
-    fontSize: 20,
-  },
-  pauseButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  pauseButtonCompact: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 6,
+    marginTop: 8,
+    gap: 4,
   },
-  pauseButtonText: {
-    fontSize: 18,
-  },
-  highScoreContainer: {
-    marginBottom: 15,
-  },
-  highScoreText: {
-    fontSize: 13,
+  pauseButtonLabel: {
+    fontSize: 9,
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    fontWeight: "bold",
+    letterSpacing: 0.5,
   },
   gameArea: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 20,
   },
-  startButton: {
+  startScreen: {
     alignItems: "center",
-    padding: 30,
+    width: "100%",
+    maxWidth: 400,
   },
-  startButtonInner: {
-    flexDirection: "row",
+  startHeader: {
     alignItems: "center",
-    gap: 12,
-    marginBottom: 40,
+    marginBottom: 32,
   },
   titleText: {
-    fontSize: 42,
+    fontSize: 48,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-    letterSpacing: 3,
-    marginBottom: 10,
+    letterSpacing: 4,
+    marginBottom: 12,
   },
   subtitleText: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-    marginBottom: 30,
+    textAlign: "center",
   },
-  startText: {
-    fontSize: 20,
+  legendCard: {
+    width: "100%",
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 20,
+    marginBottom: 28,
+  },
+  legendTitle: {
+    fontSize: 14,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    letterSpacing: 1.5,
+    marginBottom: 18,
+    textAlign: "center",
   },
-  legendContainer: {
-    gap: 12,
+  legendGrid: {
+    gap: 16,
   },
   legendItem: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 14,
   },
-  legendDot: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+  legendIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
   },
-  legendText: {
-    fontSize: 14,
+  legendTextContainer: {
+    flex: 1,
+  },
+  legendLabel: {
+    fontSize: 15,
+    fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    marginBottom: 2,
+  },
+  legendDesc: {
+    fontSize: 13,
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+  },
+  playButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 12,
+    gap: 12,
+    width: "100%",
+  },
+  playButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    color: "#000",
+    letterSpacing: 1,
   },
   gameOverContainer: {
     alignItems: "center",
-    padding: 30,
+    padding: 32,
     borderRadius: 20,
+    borderWidth: 1,
+    maxWidth: 380,
+    width: "90%",
   },
   gameOverText: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    marginBottom: 20,
+    letterSpacing: 2,
+  },
+  scoreDisplay: {
+    alignItems: "center",
     marginBottom: 16,
   },
   finalScoreText: {
-    fontSize: 48,
+    fontSize: 52,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    marginBottom: 4,
   },
   finalScoreLabel: {
-    color: "#666",
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    letterSpacing: 1,
+  },
+  achievementBadge: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
     marginBottom: 20,
   },
   newHighScore: {
-    color: "#ffd700",
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-    marginBottom: 20,
+    letterSpacing: 1,
+  },
+  gameOverStats: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    marginBottom: 24,
+    paddingVertical: 16,
+  },
+  statItem: {
+    alignItems: "center",
+    flex: 1,
+  },
+  statItemLabel: {
+    fontSize: 11,
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    marginBottom: 6,
+    letterSpacing: 0.5,
+  },
+  statItemValue: {
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+  },
+  statDivider: {
+    width: 1,
+    height: 40,
   },
   gameOverButtons: {
-    gap: 14,
-    marginTop: 20,
-    alignItems: "center",
+    gap: 12,
+    width: "100%",
   },
   menuButton: {
-    paddingHorizontal: 28,
+    paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 12,
-    minWidth: 180,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
@@ -1195,26 +1415,27 @@ const styles = StyleSheet.create({
   },
   menuButtonText: {
     color: "#000",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    letterSpacing: 1,
   },
   menuButtonSecondary: {
     backgroundColor: "transparent",
     borderWidth: 2,
-    paddingHorizontal: 28,
+    paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 12,
-    minWidth: 180,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
     gap: 8,
   },
   menuButtonSecondaryText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    letterSpacing: 0.5,
   },
   pauseOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -1224,34 +1445,59 @@ const styles = StyleSheet.create({
   },
   pauseMenu: {
     borderRadius: 20,
-    padding: 32,
+    padding: 28,
     alignItems: "center",
     borderWidth: 2,
-    minWidth: 260,
+    minWidth: 300,
+    maxWidth: 340,
+    width: "85%",
   },
   pauseTitle: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: "bold",
     fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-    marginBottom: 20,
+    marginBottom: 24,
+    letterSpacing: 2,
   },
-  pauseStats: {
-    marginBottom: 28,
-    gap: 8,
-  },
-  pauseStatText: {
-    fontSize: 15,
-    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-    textAlign: "center",
-  },
-  pauseStatLives: {
+  pauseStatsGrid: {
     flexDirection: "row",
+    gap: 12,
+    width: "100%",
+    marginBottom: 12,
+  },
+  pauseStatCard: {
+    flex: 1,
+    padding: 14,
+    borderRadius: 10,
     alignItems: "center",
-    justifyContent: "center",
+  },
+  pauseStatLabel: {
+    fontSize: 10,
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+    fontWeight: "bold",
+    letterSpacing: 1,
+    marginBottom: 6,
+  },
+  pauseStatValue: {
+    fontSize: 24,
+    fontWeight: "bold",
+    fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+  },
+  pauseLivesContainer: {
+    width: "100%",
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  pauseLivesRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 8,
   },
   pauseButtons: {
-    gap: 14,
-    alignItems: "center",
+    gap: 12,
+    width: "100%",
   },
   restartText: {
     fontSize: 16,
