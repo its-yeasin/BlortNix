@@ -300,7 +300,7 @@ export default function BlortNixGame() {
   const [lastTapTime, setLastTapTime] = useState(0);
   const [showCombo, setShowCombo] = useState(false);
 
-  const spawnIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const spawnIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cellIdRef = useRef(0);
   const missedRef = useRef(0);
   const flashAnim = useRef(new Animated.Value(0)).current;
